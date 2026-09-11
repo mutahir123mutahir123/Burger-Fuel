@@ -1,0 +1,183 @@
+Crispy Burger (All burgers served with fries)
+
+Original (Patty) | Price: 370
+
+Zingo | Price: 430
+
+Zingo Max | Price: 650
+
+Tower | Price: 550
+
+Fish Burger | Price: 700
+
+Double Fish Burger | Price: 900
+
+Fish & Chips | Price: 750
+
+Grill Burger (All burgers served with fries)
+
+Tex Max | Price: 580
+
+Salsa | Price: 580
+
+Peri Peri | Price: 550
+
+Smokey Cheese | Price: 600
+
+Double Extreme | Price: 730
+
+Meat Monster | Price: 780
+
+Beef Burger (All burgers served with fries)
+
+Smash Burger Single | Price: 700
+
+Smash Double | Price: 850
+
+Lacha Paratha Smash | Price: 750
+
+Lacha Paratha Double Smash | Price: 950
+
+Wraps
+
+Crispy or Grill Wrap | Description: Choose any two sauces (Chipotle, Honey Mustard, Salsa, B.B.Q, Chilli Lava, Peri Peri, Garlic) | Price: 700
+
+Pasta's
+
+Smokey BBQ | Price: 650
+
+Spicy Garlic | Price: 650
+
+Alfredo | Price: 650
+
+Crunchy Pasta | Price: 850
+
+Crunch N Munch
+
+Wings | 5 pcs: 460 | 10 pcs: 650
+
+BBQ Wings | 5 pcs: 500 | 10 pcs: 650
+
+Buffalo Wings | 5 pcs: 550 | 10 pcs: 700
+
+Sweet Chilli Wings | 5 pcs: 550 | 10 pcs: 700
+
+Nuggets | 5 pcs: 400 | 10 pcs: 550
+
+Strips in Chips | 5 pcs: 500 | 10 pcs: 950
+
+Fries
+
+Masala Fries | Price: 250
+
+Mayo Garlic | Price: 300
+
+Peri Peri | Price: 300
+
+Loaded Fries | Price: 650
+
+Sandwiches
+
+Club Sandwich | Price: 550
+
+Cheese Grilled Sandwich | Price: 500
+
+Pizza
+
+Tikka | Small: 450 | Medium: 950 | Large: 1450
+
+Fajita | Small: 450 | Medium: 950 | Large: 1450
+
+Supreme | Small: 450 | Medium: 950 | Large: 1450
+
+Shahi Hawaiian | Small: 450 | Medium: 950 | Large: 1450
+
+Spicy Tikka | Small: 450 | Medium: 950 | Large: 1450
+
+Hawaiian | Small: 450 | Medium: 950 | Large: 1450
+
+Special Pizza
+
+Kashmiri Crust | Medium: 1270 | Large: 1750
+
+Khaplu Crust | Medium: 1270 | Large: 1750
+
+Crown Crust | Medium: 1270 | Large: 1750
+
+Double Flat Special | Medium: 1270 | Large: 1750
+
+Mughlai Crust | Medium: 1270 | Large: 1750
+
+Signature Pizza
+
+Mughlai Khaplu Crust | Medium (11"): 1350 | Large (13"): 1900
+
+Mughlai Crust | Medium (11"): 1350 | Large (13"): 1900
+
+Extra Topping
+
+Extra Cheese / Topping | Small: 150 | Medium: 250 | Large: 300
+
+New Arrival
+
+Classic Beef Burger | Price: 650
+
+Jalapeno Beef | Price: 700
+
+Smokey Beef | Price: 700
+
+Classic Double Beef | Price: 850
+
+Deals
+
+DEAL 1 | Description: 1 Zingo Burger, Regular Fries, Soft Drink (345ml) | Price: 570
+
+DEAL 2 | Description: 2 Zingo Burgers, 2 Regular Fries, 2 Soft Drinks (345ml) | Price: 1140
+
+DEAL 3 | Description: 1 Grill Burger, Regular Fries, Soft Drink (345ml) | Price: 670
+
+DEAL 4 | Description: 2 Grill Burgers, 2 Regular Fries, 2 Soft Drinks (345ml) | Price: 1340
+
+DEAL 5 | Description: 1 Smash Burger, Regular Fries, Soft Drink (345ml) | Price: 750
+
+DEAL 6 | Description: 2 Smash Burgers, 2 Regular Fries, 2 Soft Drinks (345ml) | Price: 1500
+
+DEAL 7 | Description: Small Pizza, 345ml Soft Drink | Price: 500
+
+DEAL 8 | Description: Medium Pizza, 2 Soft Drinks (345ml) | Price: 1050
+
+DEAL 9 | Description: Large Pizza, 1.5L Soft Drink | Price: 1550
+
+DEAL 10 | Description: Medium Pizza, 1 Zingo Burger, Regular Fries, 1.5L Soft Drink | Price: 1500
+
+DEAL 11 | Description: Large Pizza, 2 Zingo Burgers, Regular Fries, 1.5L Soft Drink | Price: 2200
+
+DEAL 12 | Description: Large Pizza, 1 Medium Pizza, 2 Zingo Burgers, Regular Fries, 1.5L Soft Drink | Price: 3100
+
+Add Ons
+
+Cheese Slice | Price: 100
+
+Extra Dip Sauce | Price: 100
+
+Lacha Paratha | Price: 100
+
+Soft Drink
+
+345 ml | Price: 90
+
+0.5 Liter | Price: 130
+
+1 Liter | Price: 160
+
+1.5 Liter | Price: 220
+
+Chillers
+
+Electric Blue | Price: 400
+
+Strawberry | Price: 400
+
+Blue Berry | Price: 400
+
+Would you like me to format this into a spreadsheet/CSV file or clean table format for easier importing into your POS system?

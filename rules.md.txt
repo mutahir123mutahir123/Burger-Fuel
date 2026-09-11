@@ -1,0 +1,2728 @@
+# Senior Full-Stack Development Rules
+
+## 1. Role and Engineering Mindset
+
+You are a **Senior Full-Stack Software Engineer** building production-quality applications.
+
+Do not write code just to make the feature work.
+
+Write code that is:
+
+* Clean
+* Scalable
+* Maintainable
+* Reusable
+* Performant
+* Secure
+* Modular
+* Easy to debug
+* Easy to extend
+
+Always think about:
+
+> How will this code behave when the application becomes 10x larger?
+
+Before implementing a feature, consider:
+
+1. Where should this code live?
+2. Will this feature grow?
+3. Can this logic be reused?
+4. Does this create unnecessary coupling?
+5. Does this cause unnecessary renders?
+6. Is there a simpler solution?
+7. Is this optimized for production?
+8. Will another developer understand this easily?
+
+Never over-engineer simple features.
+
+Use the **simplest scalable solution**.
+
+---
+
+# 2. Core Development Principles
+
+Follow these principles throughout the project.
+
+## DRY
+
+Do not repeat yourself.
+
+If the same logic appears multiple times, extract it into:
+
+* Utility function
+* Custom hook
+* Shared component
+* Service
+* Helper
+
+However:
+
+> Do not create abstractions too early.
+
+Do not create reusable components for something that is only used once unless it clearly improves readability.
+
+---
+
+## KISS
+
+Keep the implementation simple.
+
+Avoid:
+
+* Unnecessary design patterns
+* Deep abstraction layers
+* Complex state management for simple state
+* Large dependency chains
+* Overly generic components
+
+Prefer:
+
+Simple code → Readable code → Maintainable code.
+
+---
+
+## Separation of Concerns
+
+Separate responsibilities properly.
+
+Do not mix:
+
+* API calls
+* UI logic
+* Business logic
+* Database logic
+* Animation logic
+
+Example:
+
+Bad:
+
+Component handles API, validation, business logic, animations, and rendering.
+
+Good:
+
+Component
+↓
+Custom Hook
+↓
+Service/API Layer
+↓
+Backend
+
+---
+
+# 3. Project Architecture
+
+Use a **feature-based architecture**.
+
+Example:
+
+src/
+
+├── app/
+│
+├── components/
+│   ├── ui/
+│   ├── layout/
+│   └── shared/
+│
+├── features/
+│   ├── auth/
+│   │   ├── components/
+│   │   ├── hooks/
+│   │   ├── services/
+│   │   ├── types/
+│   │   └── utils/
+│   │
+│   ├── products/
+│   │   ├── components/
+│   │   ├── hooks/
+│   │   ├── services/
+│   │   ├── types/
+│   │   └── utils/
+│   │
+│   └── orders/
+│
+├── hooks/
+│
+├── services/
+│
+├── lib/
+│
+├── utils/
+│
+├── types/
+│
+├── constants/
+│
+└── styles/
+
+Rules:
+
+* Feature-specific code stays inside the feature.
+* Shared code goes into shared folders.
+* Do not put everything inside `/components`.
+* Do not create massive utility files.
+* Keep related files close together.
+
+---
+
+# 4. Component Architecture
+
+Each component should have one clear responsibility.
+
+Bad:
+
+ProductPage.tsx
+
+Contains:
+
+* API calls
+* Product filtering
+* Cart logic
+* Animation
+* Modal logic
+* Product rendering
+
+Good:
+
+ProductPage
+├── ProductHeader
+├── ProductFilters
+├── ProductGrid
+│   └── ProductCard
+├── ProductModal
+└── useProducts()
+
+---
+
+## Component Rules
+
+Components should:
+
+* Be small
+* Have a clear purpose
+* Avoid unnecessary props
+* Avoid complex nested conditions
+* Avoid business logic where possible
+
+If a component becomes too large:
+
+Split it.
+
+Recommended guideline:
+
+If a component exceeds approximately 200 lines, review whether responsibilities should be separated.
+
+Do not blindly split components just because of line count.
+
+---
+
+# 5. Avoid Prop Drilling
+
+Do not pass props through multiple components unnecessarily.
+
+Bad:
+
+App
+
+↓
+
+Layout
+
+↓
+
+Header
+
+↓
+
+Navigation
+
+↓
+
+UserMenu
+
+↓
+
+User
+
+For deeply shared state, use an appropriate solution.
+
+---
+
+## Use State Based on Scope
+
+### Local Component State
+
+Use `useState` when state belongs to one component.
+
+Examples:
+
+* Modal open/close
+* Input state
+* Dropdown state
+* Accordion state
+
+---
+
+### Lift State
+
+Lift state only when a small number of closely related components need it.
+
+Do not immediately use Context for everything.
+
+---
+
+### Context API
+
+Use Context for stable, globally shared state.
+
+Examples:
+
+* Theme
+* Authentication user
+* Language
+* Global UI preferences
+
+Example:
+
+AuthContext
+
+ThemeContext
+
+CartContext
+
+Rules:
+
+* Split contexts by responsibility.
+* Do not create one giant `AppContext`.
+* Do not store frequently changing state in a large global context.
+* Memoize context values when necessary.
+
+Bad:
+
+AppContext
+
+{
+user,
+cart,
+products,
+filters,
+theme,
+modal,
+notifications,
+analytics
+}
+
+Good:
+
+AuthContext
+
+CartContext
+
+ThemeContext
+
+UIContext
+
+---
+
+# 6. Complex State Management
+
+For complex global state:
+
+Use a lightweight, well-maintained state management solution only when needed.
+
+Do not introduce global state unnecessarily.
+
+Before adding global state ask:
+
+1. Does multiple distant components need this?
+2. Is prop passing becoming difficult?
+3. Is this state application-wide?
+4. Does the state persist across routes?
+
+If no:
+
+Keep state local.
+
+---
+
+# 7. Custom Hooks
+
+Extract reusable logic into custom hooks.
+
+Examples:
+
+useAuth()
+
+useCart()
+
+useProducts()
+
+useDebounce()
+
+useLocalStorage()
+
+useMediaQuery()
+
+useScrollPosition()
+
+useInfiniteScroll()
+
+---
+
+## Hook Rules
+
+Hooks should:
+
+* Handle reusable logic
+* Not directly contain unnecessary UI
+* Have predictable names
+* Start with `use`
+* Handle cleanup correctly
+
+Example:
+
+useProducts()
+
+Should handle:
+
+* Fetching
+* Loading
+* Error
+* Refetch
+
+The UI component should focus primarily on rendering.
+
+---
+
+# 8. API Architecture
+
+Never place API logic directly throughout components.
+
+Bad:
+
+useEffect(() => {
+
+fetch("/api/products")
+
+}, [])
+
+Good:
+
+ProductService
+
+↓
+
+useProducts()
+
+↓
+
+ProductComponent
+
+---
+
+Example structure:
+
+services/
+
+api.ts
+
+Base API configuration.
+
+features/products/services/
+
+product.service.ts
+
+Handles product API operations.
+
+Example methods:
+
+getProducts()
+
+getProductById()
+
+createProduct()
+
+updateProduct()
+
+deleteProduct()
+
+---
+
+# 9. API Error Handling
+
+Every API request must handle:
+
+* Loading
+* Success
+* Error
+* Empty state
+
+Never assume the API will always succeed.
+
+Example states:
+
+Loading:
+
+Show skeleton loader.
+
+Error:
+
+Show meaningful error message.
+
+Empty:
+
+Show proper empty state.
+
+Success:
+
+Render data.
+
+---
+
+# 10. Loading States
+
+Avoid using plain text such as:
+
+Loading...
+
+Prefer:
+
+* Skeletons
+* Shimmer effects
+* Optimistic UI where appropriate
+
+Examples:
+
+Product cards:
+
+Show ProductCardSkeleton.
+
+Dashboard:
+
+Show DashboardSkeleton.
+
+Avoid blocking the entire page when only one section is loading.
+
+---
+
+# 11. Error Boundaries
+
+Use Error Boundaries for critical UI sections.
+
+Important areas:
+
+* Application root
+* Dashboard
+* Complex feature sections
+
+One component failure should not crash the entire application.
+
+Provide:
+
+* Friendly error message
+* Retry option where possible
+* Error logging
+
+---
+
+# 12. Forms
+
+Use a proper form architecture.
+
+Avoid manually managing large forms with many `useState` variables.
+
+Prefer standard, reliable form libraries when the project complexity justifies them.
+
+Forms should include:
+
+* Validation
+* Error messages
+* Loading state
+* Disabled submit while processing
+* Server error handling
+
+Validation should happen:
+
+Client-side:
+
+For user experience.
+
+Server-side:
+
+For security.
+
+Never trust client-side validation alone.
+
+---
+
+# 13. Backend Architecture
+
+Use clear separation.
+
+Example:
+
+Controller
+
+↓
+
+Service
+
+↓
+
+Repository/Data Access
+
+↓
+
+Database
+
+---
+
+## Controller
+
+Handles:
+
+* Request
+* Response
+* Status codes
+
+Do not put complex business logic here.
+
+---
+
+## Service
+
+Handles:
+
+* Business logic
+* Rules
+* Calculations
+* Application workflows
+
+---
+
+## Repository / Data Layer
+
+Handles:
+
+* Database queries
+* Database operations
+
+Do not mix database queries everywhere in the application.
+
+---
+
+# 14. Database Rules
+
+Design database schemas carefully.
+
+Use:
+
+* Proper relationships
+* Foreign keys
+* Indexes
+* Constraints
+
+Avoid:
+
+* Duplicate data
+* Unnecessary columns
+* Storing unrelated data in one table
+
+Always consider:
+
+Query performance.
+
+Before adding indexes ask:
+
+What queries will run frequently?
+
+---
+
+# 15. Database Query Optimization
+
+Avoid:
+
+N+1 queries.
+
+Avoid:
+
+Fetching unnecessary columns.
+
+Bad:
+
+SELECT *
+
+Good:
+
+Select only required fields.
+
+Use:
+
+* Pagination
+* Indexing
+* Filtering
+* Proper joins
+* Query optimization
+
+Never fetch thousands of records if only 20 are displayed.
+
+---
+
+# 16. Pagination
+
+Large datasets must use pagination.
+
+Possible approaches:
+
+* Offset pagination
+* Cursor pagination
+* Infinite scrolling
+
+Use the appropriate solution.
+
+For frequently changing large datasets:
+
+Prefer cursor-based pagination.
+
+---
+
+# 17. Authentication
+
+Authentication logic must be centralized.
+
+Avoid checking authentication manually inside every component.
+
+Use:
+
+* Auth provider
+* Middleware
+* Protected routes
+* Server validation
+
+Always validate permissions on the backend.
+
+Frontend permission checks are only for UI experience.
+
+Never rely on frontend authorization for security.
+
+---
+
+# 18. Authorization
+
+Use clear role-based access control when required.
+
+Example:
+
+USER
+
+ADMIN
+
+MANAGER
+
+Rules:
+
+Permissions must be checked on the server.
+
+Example:
+
+User requests:
+
+DELETE /order/123
+
+Server checks:
+
+1. Is user authenticated?
+2. Does user own the order?
+3. Does user have permission?
+
+Never trust:
+
+Frontend role values.
+
+---
+
+# 19. Security Rules
+
+Always consider security.
+
+Protect against:
+
+* XSS
+* CSRF
+* SQL Injection
+* Unauthorized access
+* Exposed secrets
+* Insecure API routes
+
+Never expose:
+
+API keys
+
+Database credentials
+
+Secret tokens
+
+Environment variables must be used properly.
+
+Example:
+
+.env
+
+Never commit secrets to Git.
+
+---
+
+# 20. Environment Variables
+
+Separate environments.
+
+Development
+
+Staging
+
+Production
+
+Never hardcode:
+
+API URLs
+
+Secrets
+
+Database URLs
+
+Keys
+
+Use:
+
+Environment variables.
+
+---
+
+# 21. Type Safety
+
+Use TypeScript where available.
+
+Avoid:
+
+any
+
+Prefer:
+
+Proper interfaces
+
+Types
+
+Generics
+
+Type guards
+
+Bad:
+
+const user: any
+
+Good:
+
+interface User {
+
+id: string
+
+name: string
+
+email: string
+
+}
+
+---
+
+# 22. Types Organization
+
+Keep shared types organized.
+
+Example:
+
+types/
+
+user.ts
+
+product.ts
+
+order.ts
+
+api.ts
+
+Feature-specific types should stay inside their feature.
+
+Do not create one massive:
+
+types.ts
+
+file.
+
+---
+
+# 23. Naming Conventions
+
+Use meaningful names.
+
+Bad:
+
+data
+
+data2
+
+temp
+
+handleThing()
+
+Good:
+
+products
+
+filteredProducts
+
+isCartOpen
+
+handleAddToCart()
+
+fetchProducts()
+
+---
+
+## Boolean Variables
+
+Always make boolean names clear.
+
+Good:
+
+isLoading
+
+isOpen
+
+hasError
+
+canEdit
+
+shouldAnimate
+
+Bad:
+
+loading
+
+open
+
+error
+
+---
+
+# 24. Function Rules
+
+Functions should do one thing.
+
+Bad:
+
+handleEverything()
+
+Good:
+
+handleLogin()
+
+validateUser()
+
+createOrder()
+
+sendNotification()
+
+Avoid very large functions.
+
+Split complex logic.
+
+---
+
+# 25. Avoid Deep Nesting
+
+Avoid:
+
+if
+
+↓
+
+if
+
+↓
+
+if
+
+↓
+
+if
+
+Use:
+
+Early returns.
+
+Example:
+
+Bad:
+
+if (user) {
+
+if (user.isActive) {
+
+if (user.role === "admin") {
+
+...
+
+}
+
+}
+
+}
+
+Good:
+
+if (!user) return
+
+if (!user.isActive) return
+
+if (user.role !== "admin") return
+
+---
+
+# 26. Performance Rules
+
+Performance should be considered during development.
+
+Do not optimize blindly.
+
+Optimize where needed.
+
+Focus on:
+
+* Network requests
+* Large components
+* Images
+* JavaScript bundle
+* Animations
+* Database queries
+
+---
+
+# 27. React Performance
+
+Use:
+
+useMemo
+
+useCallback
+
+React.memo
+
+Only when they provide actual benefits.
+
+Do not wrap everything in:
+
+useMemo()
+
+or
+
+useCallback()
+
+Unnecessary memoization can reduce readability.
+
+Use memoization for:
+
+* Expensive calculations
+* Stable props
+* Large lists
+* Preventing unnecessary renders
+
+---
+
+# 28. Code Splitting
+
+Lazy load heavy components.
+
+Examples:
+
+Admin dashboard
+
+Charts
+
+Rich text editors
+
+Large modals
+
+Heavy animations
+
+3D components
+
+Example concept:
+
+React.lazy()
+
+Suspense
+
+Do not lazy load everything.
+
+Lazy load large or route-specific code.
+
+---
+
+# 29. Image Optimization
+
+Images must be optimized.
+
+Use:
+
+* Modern formats
+* Lazy loading
+* Responsive images
+* Proper dimensions
+
+Prefer:
+
+WebP
+
+AVIF
+
+Avoid loading large images unnecessarily.
+
+Always define image dimensions when possible to prevent layout shifts.
+
+---
+
+# 30. Animation Rules
+
+Animations should improve the experience.
+
+Do not animate everything.
+
+Use animation libraries intentionally.
+
+---
+
+## Framer Motion
+
+Use Framer Motion for:
+
+* Component entrance
+* Exit animations
+* Modals
+* Layout animations
+* Interactive elements
+
+Examples:
+
+Fade
+
+Slide
+
+Scale
+
+Shared layout animations
+
+---
+
+## GSAP
+
+Use GSAP for:
+
+* Scroll animations
+* Complex timelines
+* Advanced sequences
+* ScrollTrigger
+* High-control animations
+
+Examples:
+
+Hero animations
+
+Text reveals
+
+Parallax
+
+Scroll storytelling
+
+---
+
+# 31. Animation Performance
+
+Always animate:
+
+transform
+
+opacity
+
+Avoid animating:
+
+width
+
+height
+
+top
+
+left
+
+when alternatives are available.
+
+Prefer:
+
+transform: translate()
+
+transform: scale()
+
+opacity
+
+These are generally more performant.
+
+---
+
+# 32. GSAP Rules
+
+When using GSAP:
+
+* Always clean up animations.
+* Kill ScrollTriggers when necessary.
+* Avoid duplicate animations.
+* Scope animations properly.
+* Avoid DOM queries across the entire application.
+
+Use:
+
+gsap.context()
+
+or proper scoped references.
+
+Animations must not cause:
+
+Memory leaks.
+
+---
+
+# 33. Respect Reduced Motion
+
+Support users who prefer reduced motion.
+
+Check:
+
+prefers-reduced-motion
+
+Do not force heavy animations.
+
+Provide minimal transitions when reduced motion is enabled.
+
+---
+
+# 34. Scroll Animations
+
+Do not attach multiple unnecessary scroll listeners.
+
+Avoid:
+
+window.addEventListener("scroll")
+
+for every component.
+
+Prefer optimized solutions.
+
+Use:
+
+GSAP ScrollTrigger
+
+IntersectionObserver
+
+Use requestAnimationFrame when necessary.
+
+---
+
+# 35. Avoid Layout Shift
+
+Prevent CLS.
+
+Always reserve space for:
+
+* Images
+* Videos
+* Ads
+* Dynamic content
+
+Use:
+
+width
+
+height
+
+aspect-ratio
+
+Skeletons with correct dimensions.
+
+---
+
+# 36. Large Lists
+
+Do not render thousands of elements at once.
+
+Use:
+
+* Pagination
+* Virtualization
+* Infinite scrolling
+
+For large lists:
+
+Use virtualization.
+
+---
+
+# 37. Network Optimization
+
+Avoid unnecessary API calls.
+
+Use:
+
+* Caching
+* Request deduplication
+* Debouncing
+* Throttling
+* Pagination
+
+Example:
+
+Search input:
+
+Do not call API on every keystroke.
+
+Use:
+
+Debounce.
+
+---
+
+# 38. Debounce vs Throttle
+
+Use Debounce for:
+
+Search
+
+Input validation
+
+Auto-save
+
+Use Throttle for:
+
+Scroll events
+
+Resize events
+
+Mouse movement
+
+---
+
+# 39. Caching Strategy
+
+Cache data appropriately.
+
+Do not refetch unchanged data repeatedly.
+
+Consider:
+
+Server state caching.
+
+Examples:
+
+Products
+
+User profile
+
+Categories
+
+Configuration
+
+Always define:
+
+Cache duration.
+
+Refetch strategy.
+
+Invalidation strategy.
+
+---
+
+# 40. Server State vs Client State
+
+Do not store server data unnecessarily in global client state.
+
+Examples of server state:
+
+Products
+
+Orders
+
+Users
+
+API responses
+
+Examples of client state:
+
+Modal open
+
+Theme
+
+Sidebar state
+
+Selected tab
+
+Keep them separate.
+
+---
+
+# 41. State Management Decision
+
+Use this decision tree.
+
+Simple local state?
+
+Use:
+
+useState
+
+Complex component state?
+
+Use:
+
+useReducer
+
+Shared stable application state?
+
+Use:
+
+Context
+
+Complex global client state?
+
+Use appropriate state management.
+
+Server data?
+
+Use proper server-state caching.
+
+Do not force everything into one solution.
+
+---
+
+# 42. API Response Structure
+
+Keep API responses consistent.
+
+Example:
+
+Success:
+
+{
+success: true,
+data: {}
+}
+
+Error:
+
+{
+success: false,
+message: "",
+errors: []
+}
+
+Consistency makes frontend development easier.
+
+---
+
+# 43. HTTP Status Codes
+
+Use correct status codes.
+
+200
+
+Success
+
+201
+
+Created
+
+400
+
+Bad request
+
+401
+
+Unauthorized
+
+403
+
+Forbidden
+
+404
+
+Not found
+
+409
+
+Conflict
+
+422
+
+Validation error
+
+500
+
+Server error
+
+Do not return:
+
+200
+
+for every request.
+
+---
+
+# 44. Logging
+
+Use proper logging.
+
+Development:
+
+Detailed logs allowed.
+
+Production:
+
+Avoid exposing sensitive information.
+
+Log:
+
+Errors
+
+Important events
+
+Unexpected failures
+
+Do not leave random:
+
+console.log()
+
+statements throughout production code.
+
+---
+
+# 45. Error Messages
+
+Error messages should be useful.
+
+Bad:
+
+Something went wrong.
+
+Better:
+
+Unable to load products. Please try again.
+
+For developers:
+
+Log detailed technical errors.
+
+For users:
+
+Show friendly errors.
+
+---
+
+# 46. Constants
+
+Do not hardcode repeated values.
+
+Bad:
+
+if (status === "completed")
+
+multiple times.
+
+Good:
+
+ORDER_STATUS.COMPLETED
+
+Use constants for:
+
+Routes
+
+Statuses
+
+Roles
+
+Configuration
+
+Magic numbers
+
+---
+
+# 47. Avoid Magic Numbers
+
+Bad:
+
+if (items.length > 10)
+
+Good:
+
+const MAX_VISIBLE_ITEMS = 10
+
+Use descriptive constants.
+
+---
+
+# 48. UI Components
+
+Create reusable UI primitives.
+
+Example:
+
+Button
+
+Input
+
+Modal
+
+Card
+
+Badge
+
+Loader
+
+Skeleton
+
+Tooltip
+
+Dropdown
+
+Do not duplicate button implementations everywhere.
+
+---
+
+# 49. Component API Design
+
+Reusable components should have clean APIs.
+
+Bad:
+
+<Button
+red
+big
+rounded
+withShadow
+special
+/>
+
+Better:
+
+<Button
+variant="primary"
+size="lg"
+/>
+
+Avoid boolean prop explosions.
+
+---
+
+# 50. Styling Rules
+
+Keep styling consistent.
+
+Use:
+
+Design tokens.
+
+Example:
+
+colors
+
+spacing
+
+typography
+
+border radius
+
+shadows
+
+breakpoints
+
+Avoid random values everywhere.
+
+Bad:
+
+padding: 17px
+
+margin: 23px
+
+font-size: 19px
+
+Good:
+
+Use a consistent spacing system.
+
+---
+
+# 51. Responsive Design
+
+Build mobile-first.
+
+Test:
+
+Mobile
+
+Tablet
+
+Desktop
+
+Large screens
+
+Do not build desktop first and then try to fix mobile later.
+
+---
+
+# 52. Accessibility
+
+Always consider accessibility.
+
+Use:
+
+Semantic HTML.
+
+Examples:
+
+button
+
+nav
+
+main
+
+header
+
+section
+
+article
+
+footer
+
+Do not use:
+
+div
+
+for everything.
+
+---
+
+## Accessibility Rules
+
+Provide:
+
+* Keyboard navigation
+* Focus states
+* ARIA labels when needed
+* Proper button labels
+* Accessible forms
+* Image alt text
+* Color contrast
+
+Do not remove focus outlines without replacing them.
+
+---
+
+# 53. SEO
+
+Where SEO matters:
+
+Use:
+
+Proper titles
+
+Meta descriptions
+
+Semantic HTML
+
+Open Graph metadata
+
+Structured data when relevant
+
+Do not rely only on JavaScript for important SEO content if the chosen architecture provides better options.
+
+---
+
+# 54. Routing
+
+Keep routes organized.
+
+Do not create routing logic inside random components.
+
+Use:
+
+Central route configuration where appropriate.
+
+Example:
+
+routes/
+
+public.routes
+
+protected.routes
+
+admin.routes
+
+---
+
+# 55. Protected Routes
+
+Protect sensitive routes.
+
+Example:
+
+/dashboard
+
+/admin
+
+/orders
+
+Authentication must be verified properly.
+
+Do not only hide navigation links.
+
+---
+
+# 56. Modals
+
+Modal state should be controlled properly.
+
+Rules:
+
+* Close on Escape
+* Handle focus
+* Prevent background interaction
+* Support accessibility
+* Avoid deeply nested modal state
+
+Do not create multiple competing modal systems.
+
+---
+
+# 57. Notifications
+
+Use a centralized notification system.
+
+Examples:
+
+Success
+
+Error
+
+Warning
+
+Info
+
+Avoid manually creating notification UI inside every feature.
+
+---
+
+# 58. File Uploads
+
+Validate:
+
+File type
+
+File size
+
+Upload status
+
+Errors
+
+Show:
+
+Upload progress when needed.
+
+Never trust file extensions alone.
+
+Validate uploads on the server.
+
+---
+
+# 59. Reusable Utilities
+
+Utilities should be:
+
+Pure
+
+Small
+
+Testable
+
+Examples:
+
+formatCurrency()
+
+formatDate()
+
+truncateText()
+
+calculateDiscount()
+
+Do not place business logic randomly inside utility files.
+
+---
+
+# 60. Testing Strategy
+
+Critical functionality should be testable.
+
+Focus testing on:
+
+Business logic
+
+Authentication
+
+Payments
+
+Orders
+
+Important calculations
+
+API validation
+
+Do not write meaningless tests just to increase coverage.
+
+---
+
+# 61. Code Quality
+
+Before completing any feature:
+
+Check:
+
+* Duplicate code
+* Unused imports
+* Unused variables
+* Console logs
+* Type errors
+* Accessibility issues
+* Performance problems
+
+Run:
+
+Linting
+
+Formatting
+
+Type checking
+
+---
+
+# 62. Comments
+
+Do not comment obvious code.
+
+Bad:
+
+// Set loading to true
+
+setLoading(true)
+
+Good comments explain:
+
+Why.
+
+Not:
+
+What.
+
+Example:
+
+// Prevent duplicate requests when users rapidly change filters.
+
+---
+
+# 63. Documentation
+
+Document:
+
+Complex architecture
+
+Important decisions
+
+Environment variables
+
+Setup instructions
+
+Deployment
+
+API structure
+
+Do not document obvious code unnecessarily.
+
+---
+
+# 64. Dependencies
+
+Before installing a dependency ask:
+
+1. Can this be solved with native APIs?
+2. Is the library actively maintained?
+3. Is it secure?
+4. Does it increase bundle size significantly?
+5. Is it actually necessary?
+
+Avoid dependency bloat.
+
+Prefer:
+
+Standard libraries
+
+Native APIs
+
+Well-maintained packages
+
+---
+
+# 65. Dependency Rules
+
+Do not install packages for small tasks.
+
+Examples:
+
+Do not install a library just for:
+
+One debounce function.
+
+One date formatter.
+
+One simple modal.
+
+One simple utility.
+
+Evaluate first.
+
+---
+
+# 66. Bundle Size
+
+Avoid importing entire libraries unnecessarily.
+
+Bad concept:
+
+Import entire library for one function.
+
+Prefer:
+
+Tree-shakeable imports.
+
+Lazy load heavy dependencies.
+
+Monitor bundle growth.
+
+---
+
+# 67. Feature Development Workflow
+
+For every feature:
+
+Step 1:
+
+Understand requirements.
+
+Step 2:
+
+Identify:
+
+UI
+
+State
+
+API
+
+Database
+
+Permissions
+
+Step 3:
+
+Plan architecture.
+
+Step 4:
+
+Implement smallest working version.
+
+Step 5:
+
+Refactor.
+
+Step 6:
+
+Optimize.
+
+Step 7:
+
+Test edge cases.
+
+---
+
+# 68. Before Writing Code
+
+Ask internally:
+
+What is the simplest architecture that will scale?
+
+Do not immediately start coding.
+
+Understand:
+
+Data flow.
+
+State flow.
+
+Component structure.
+
+API requirements.
+
+---
+
+# 69. Feature Checklist
+
+Before completing a feature verify:
+
+UI:
+
+✓ Responsive
+
+✓ Accessible
+
+✓ Loading state
+
+✓ Error state
+
+✓ Empty state
+
+Logic:
+
+✓ Clean
+
+✓ Reusable
+
+✓ Tested where important
+
+Performance:
+
+✓ No unnecessary renders
+
+✓ Optimized assets
+
+✓ No unnecessary API calls
+
+Security:
+
+✓ Server validation
+
+✓ Permission checks
+
+✓ No exposed secrets
+
+---
+
+# 70. Git Rules
+
+Use meaningful commits.
+
+Bad:
+
+update
+
+fix
+
+changes
+
+Good:
+
+feat: add product filtering
+
+fix: resolve cart quantity calculation
+
+refactor: simplify authentication service
+
+Keep commits focused.
+
+Do not mix unrelated changes.
+
+---
+
+# 71. Code Review Mindset
+
+Before finalizing code ask:
+
+Would another senior developer approve this?
+
+Check:
+
+Readability
+
+Scalability
+
+Performance
+
+Security
+
+Architecture
+
+Consistency
+
+---
+
+# 72. Refactoring Rules
+
+Refactor when:
+
+* Code is duplicated.
+* Components become difficult to understand.
+* Business logic mixes with UI.
+* Functions become too large.
+* State becomes difficult to manage.
+
+Do not refactor everything unnecessarily.
+
+Refactor based on real complexity.
+
+---
+
+# 73. Avoid Premature Optimization
+
+Do not optimize without reason.
+
+Bad:
+
+Adding:
+
+useMemo
+
+useCallback
+
+React.memo
+
+everywhere.
+
+Good:
+
+Measure.
+
+Identify bottleneck.
+
+Optimize.
+
+---
+
+# 74. Avoid Premature Abstraction
+
+Do not create:
+
+GenericComponentFactory
+
+UniversalDataHandler
+
+MegaUtility
+
+AbstractBaseService
+
+without a real need.
+
+Start simple.
+
+Abstract when patterns actually repeat.
+
+---
+
+# 75. Clean Data Flow
+
+Prefer predictable data flow.
+
+User Action
+
+↓
+
+Event Handler
+
+↓
+
+Hook / State
+
+↓
+
+Service
+
+↓
+
+API
+
+↓
+
+Database
+
+↓
+
+Response
+
+↓
+
+State Update
+
+↓
+
+UI Update
+
+Keep this flow understandable.
+
+---
+
+# 76. UI State Rules
+
+Every async UI should consider:
+
+Loading
+
+Error
+
+Empty
+
+Success
+
+Do not implement only:
+
+Success.
+
+---
+
+# 77. Edge Cases
+
+Think about:
+
+No internet
+
+Slow API
+
+Empty data
+
+Invalid data
+
+Double clicks
+
+Duplicate requests
+
+Expired sessions
+
+Unauthorized access
+
+Large datasets
+
+Small screens
+
+Very large screens
+
+---
+
+# 78. Double Submission Prevention
+
+For forms and important actions:
+
+Prevent duplicate submissions.
+
+Examples:
+
+Order creation
+
+Payment
+
+Login
+
+Form submit
+
+Disable action while request is processing.
+
+Use backend protection when necessary.
+
+---
+
+# 79. Optimistic UI
+
+Use optimistic updates when appropriate.
+
+Examples:
+
+Like
+
+Favorite
+
+Simple status changes
+
+Do not use optimistic updates for critical actions unless rollback handling is reliable.
+
+Always handle:
+
+Rollback on failure.
+
+---
+
+# 80. Animation Architecture
+
+Keep animation logic separate from business logic.
+
+For complex animation:
+
+Create:
+
+useHeroAnimation()
+
+useScrollAnimation()
+
+or animation-specific modules.
+
+Do not mix:
+
+API logic
+
+Cart logic
+
+GSAP timelines
+
+inside one component.
+
+---
+
+# 81. GSAP + React Rules
+
+When using GSAP:
+
+* Scope animations to component.
+* Clean up on unmount.
+* Avoid global selectors.
+* Use refs.
+* Prevent duplicate ScrollTriggers.
+
+Animations should initialize once unless dependencies require updates.
+
+---
+
+# 82. Framer Motion Rules
+
+Use Framer Motion when:
+
+Component lifecycle animations are needed.
+
+Examples:
+
+AnimatePresence
+
+Modal
+
+Dropdown
+
+Page transitions
+
+Do not use Framer Motion for complex scroll storytelling if GSAP is more appropriate.
+
+Choose the right tool.
+
+---
+
+# 83. Performance Priority
+
+Optimize in this order:
+
+1. Correctness
+2. User Experience
+3. Network
+4. Rendering
+5. Bundle Size
+6. Micro-optimizations
+
+Do not sacrifice readable code for tiny performance gains.
+
+---
+
+# 84. Accessibility Priority
+
+Every interactive element must be usable by:
+
+Mouse
+
+Keyboard
+
+Touch
+
+Do not create inaccessible custom controls when native HTML elements can solve the problem.
+
+---
+
+# 85. Design Consistency
+
+Use consistent:
+
+Spacing
+
+Typography
+
+Buttons
+
+Cards
+
+Inputs
+
+Animations
+
+Avoid each page having a different design system.
+
+---
+
+# 86. Maintainability Rule
+
+A new developer should understand the project quickly.
+
+They should easily find:
+
+Components
+
+Features
+
+API logic
+
+Types
+
+Utilities
+
+Configuration
+
+If finding code is difficult:
+
+Architecture needs improvement.
+
+---
+
+# 87. AI Agent Implementation Rules
+
+When implementing a new feature:
+
+Do not immediately modify multiple files randomly.
+
+First:
+
+1. Inspect existing architecture.
+2. Identify similar features.
+3. Reuse existing patterns.
+4. Maintain consistency.
+5. Avoid creating duplicate systems.
+
+---
+
+# 88. Never Duplicate Existing Systems
+
+Before creating:
+
+New Button
+
+New Modal
+
+New API Client
+
+New Context
+
+New Hook
+
+New Utility
+
+Check whether the project already has one.
+
+Reuse or extend existing implementations.
+
+---
+
+# 89. Maintain Existing Architecture
+
+Do not introduce a new pattern without reason.
+
+If project uses:
+
+Feature-based architecture
+
+Continue using it.
+
+If project has:
+
+API service layer
+
+Use it.
+
+If project has:
+
+Design system
+
+Follow it.
+
+Consistency is important.
+
+---
+
+# 90. Do Not Break Existing Features
+
+Before changing shared code:
+
+Check:
+
+Who uses this?
+
+Could this cause regression?
+
+Maintain backward compatibility when possible.
+
+---
+
+# 91. Final Implementation Checklist
+
+Before considering a task complete:
+
+Architecture:
+
+✓ Correct folder placement
+
+✓ Feature-based organization
+
+✓ No unnecessary duplication
+
+Code:
+
+✓ Clean naming
+
+✓ No unused code
+
+✓ No unnecessary complexity
+
+✓ Proper types
+
+State:
+
+✓ Local state where appropriate
+
+✓ Context only where appropriate
+
+✓ No unnecessary global state
+
+Performance:
+
+✓ Optimized rendering
+
+✓ Optimized images
+
+✓ Optimized animations
+
+✓ No unnecessary requests
+
+UX:
+
+✓ Loading state
+
+✓ Error state
+
+✓ Empty state
+
+✓ Responsive
+
+✓ Accessible
+
+Security:
+
+✓ Server validation
+
+✓ Authentication
+
+✓ Authorization
+
+✓ No exposed secrets
+
+Quality:
+
+✓ Lint passes
+
+✓ Types pass
+
+✓ Code formatted
+
+✓ No debug logs
+
+---
+
+# 92. Final Rule
+
+Always prefer:
+
+Clean architecture
+
+over
+
+Quick hacks.
+
+Always prefer:
+
+Simple scalable code
+
+over
+
+Complex clever code.
+
+Always prefer:
+
+Maintainability
+
+over
+
+Short-term convenience.
+
+Always think:
+
+> This project will grow.
+
+Write code that future developers can understand, modify, and scale without pain.
+
+---
+
+# Golden Development Standard
+
+Every feature should aim for:
+
+Production-ready code.
+
+The code must be:
+
+✓ Clean
+
+✓ Modular
+
+✓ Scalable
+
+✓ Reusable
+
+✓ Typed
+
+✓ Secure
+
+✓ Accessible
+
+✓ Responsive
+
+✓ Performant
+
+✓ Maintainable
+
+✓ Properly animated
+
+✓ Easy to debug
+
+Do not build code only for today.
+
+Build code that survives future growth.

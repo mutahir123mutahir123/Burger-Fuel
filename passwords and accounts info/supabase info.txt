@@ -1,0 +1,5 @@
+Email:burgerfueladmin@gmail.com
+Password:Burgerfueladmin123!
+
+Project Name:Burger-Fuel
+Database Password:BurgerFuel123!

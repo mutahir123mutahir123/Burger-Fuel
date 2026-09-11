@@ -1,0 +1,4 @@
+- Next.js 16.3.4 (App Router) + React 19.2.8 + TypeScript 5, Tailwind CSS v4, Motion (framer-motion successor), GSAP, Prisma 7 with SQLite/better-sqlite3.
+- Route alias @/* maps to D:\burgerfuel\src\*.
+- Important: AGENTS.md warns this is a modified Next.js 16 with breaking changes vs. documented/deprecated APIs — docs live in node_modules/next/dist/docs/.
+- Menu data is static TypeScript constants (not DB-backed). Prisma schema (prisma/schema.prisma) only contains Order, OrderItem, AdminUser — no products.
