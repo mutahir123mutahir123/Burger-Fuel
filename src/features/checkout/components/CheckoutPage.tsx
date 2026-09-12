@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { motion } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -46,6 +46,11 @@ export function CheckoutPage() {
 
   const deliveryFee = subtotal >= 800 || fulfilment === "pickup" ? 0 : 99;
   const grandTotal = subtotal + deliveryFee;
+
+  useEffect(() => {
+    if (!orderRef) return;
+    window.scrollTo(0, 0);
+  }, [orderRef]);
 
   const set = useCallback(
     (key: keyof FormState) =>
