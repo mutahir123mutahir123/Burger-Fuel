@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
-import { Fire, ForkKnife, MapPin, Phone, Star } from "@phosphor-icons/react/dist/ssr";
+import { Fire, ForkKnife, Phone, Star } from "@phosphor-icons/react/dist/ssr";
 
 const METRICS = [
   { value: "30 MIN", label: "Hot Delivery In Shad Bagh", valueClass: "text-mustard" },
@@ -38,22 +38,6 @@ export function Hero() {
           {...entrance(0.05)}
           className="mb-8 flex flex-wrap items-center justify-between gap-3"
         >
-          <div className="inline-flex items-center gap-2 rounded-full bg-surface-3/90 px-4 py-2 shadow-lg backdrop-blur-md">
-            <span className="relative flex h-3 w-3" aria-hidden="true">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-success-green opacity-75" />
-              <span className="relative inline-flex h-3 w-3 rounded-full bg-success-green" />
-            </span>
-            <span className="text-xs font-bold uppercase tracking-wider text-white">
-              Open Now · Closes 2:00 AM
-            </span>
-            <span aria-hidden="true" className="text-surface-highest">
-              |
-            </span>
-            <span className="flex items-center gap-1 text-xs font-medium text-muted">
-              <MapPin size={16} weight="bold" className="text-primary" aria-hidden="true" />
-              Tokey Wala Chowk, Shad Bagh, Lahore
-            </span>
-          </div>
           <div className="inline-flex items-center gap-2 rounded-full bg-surface-3/70 px-4 py-2">
             <Fire size={18} weight="fill" className="text-mustard" aria-hidden="true" />
             <span className="text-xs font-medium uppercase tracking-wider text-text-soft">
