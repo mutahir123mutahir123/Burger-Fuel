@@ -111,7 +111,7 @@ export function FullMenuPage() {
         </p>
       </div>
 
-      <div className="sticky top-20 z-30 mt-8 -mx-4 overflow-x-auto bg-canvas/80 px-4 py-3 backdrop-blur-md sm:mx-0 sm:px-0 sm:py-4">
+      <div className="sticky top-20 z-30 mt-8 -mx-4 overflow-x-auto bg-canvas/80 px-4 py-3 backdrop-blur-md no-scrollbar sm:mx-0 sm:px-0 sm:py-4">
         <div className="flex gap-2" role="tablist" aria-label="Menu sections">
           {ALL_SECTIONS.map((section) => (
             <Chip

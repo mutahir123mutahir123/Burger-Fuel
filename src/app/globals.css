@@ -1,6 +1,16 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
+/* Hide native scrollbars on horizontal sliders while keeping swipe/scroll */
+@utility no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 /* ============================================================
    Burger Fuel — "Fuel & Flame Street Kitchen" design tokens
    High-contrast street brutalism x sleek dark mode
